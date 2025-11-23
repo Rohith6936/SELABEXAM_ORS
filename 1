@@ -1,0 +1,155 @@
+tinyurl.com/selab08
+
+I)Jenkins:
+pre requisites:
+1)localhost 8080---tomcat---user if and password
+2) plugins
+	email-notification
+3) tools and configuration
+	maven,git,jdk
+
+ngrok
+ngrok config add-authtoken 35dp8oMoSdBonOxkUaFp69NyKqc_3yXYawnGmFEXptXECQQmk
+ngrok.exe http 8081
+click on link
+in GitHub add webhook https://halle-revelatory-intellectively.ngrok-free.dev/  ---> https://halle-revelatory-intellectively.ngrok-free.dev/github-webhook/
+
+
+Questions:
+1)Two pipeline
+2)three pipeline
+3)buildtriggers ---webhook
+
+4)email-notification
+
+
+
+5)scripted pipeline
+pipline 
+write script 
+
+pipeline {
+    agent any
+
+    tools {
+        maven 'MAVEN_HOME'
+        jdk 'JDK17'
+    }
+
+    stages {
+
+        stage('Checkout') {
+            steps {
+                cleanWs()
+                git branch: 'main', url: 'https://github.com/nishneeth/mavenjava.git'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                bat 'mvn clean compile'
+            }
+        }
+
+        stage('Run Tests') {
+            steps {
+                bat 'mvn test'
+            }
+        }
+
+        stage('Package JAR') {
+            steps {
+                bat 'mvn package'
+            }
+        }
+
+        stage('Archive Artifact') {
+            steps {
+                archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'Build succeeded.'
+        }
+        failure {
+            echo 'Build failed.'
+        }
+    }
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////
+pipeline {
+    agent any
+    tools {
+        maven "MAVEN_HOME"
+    }
+    stages {
+        stage("git clone & mvn clean") {
+            steps {
+                bat "git clone https://github.com/...git"
+                bat "mvn clean -f mavenjava"
+            }
+        }
+        stage("mvn install") {
+            steps { bat "mvn install -f mavenjava" }
+        }
+        stage("mvn test") {
+            steps { bat "mvn test -f mavenjava" }
+        }
+        stage("mvn package") {
+            steps { bat "mvn package -f mavenjava" }
+        }
+    }
+}
+
+
+build now
+
+6)kubernetes---minikube
+pre requisites:
+1)docker desktop-running
+2)Docker image
+
+name= mynginx
+minikube start
+minikube status
+minikube dashboard
+kubectl get pods
+kubectl get deployments
+kubectl create deployment mynginx --image=nginx
+kubectl scale deployment mynginx --replicas=4
+kubectl expose deployment mynginx --type=NodePort --port=80
+minikube service mynginx --url
+kubectl delete deployment mynginx
+
+
+7)nagios:
+pre requisites:
+1)docker
+
+docker pull jasonrivers/nagios:latest
+docker run -d -p 6969:80 jasonrivers/nagios:latest
+username: nagiosadmin
+pwd: nagios
+click on hosts
+
+8)aws  if not working yum
+sudo su
+sudo apt-get update
+sudo apt-get install docker.io
+sudo docker --version
+sudo docker images
+sudo docker ps
+https://github.com/archanareddyse/mavenweb.git --- git clone http of maven application  
+cd mavenweb --- cd maven-web folder name
+sudo docker build -t img1 .
+sudo docker images
+sudo docker run -d -p 80:8080 img1
+https://3.238.171.121/ ---> http://3.238.171.121:80
+
+9)uml-use-case,class diagram,sequence dig,component diagram
+case-studies --- ors,lmg,hmg,book bankings,atm
+
+dockerfile

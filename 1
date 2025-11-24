@@ -83,23 +83,38 @@ pipeline {
 pipeline {
     agent any
     tools {
-        maven "MAVEN_HOME"
+        maven 'MAVEN_HOME'
     }
     stages {
-        stage("git clone & mvn clean") {
+        stage('Clean Workspace') {
             steps {
-                bat "git clone https://github.com/...git"
-                bat "mvn clean -f mavenjava"
+                cleanWs()
             }
         }
-        stage("mvn install") {
-            steps { bat "mvn install -f mavenjava" }
+
+        stage('git repo & clean') {
+            steps {
+                bat "git clone https://github.com/manisai28/se-lab.git"
+                bat "mvn clean -f se-lab/pom.xml"
+            }
         }
-        stage("mvn test") {
-            steps { bat "mvn test -f mavenjava" }
+
+        stage('install') {
+            steps {
+                bat "mvn install -f se-lab/pom.xml"
+            }
         }
-        stage("mvn package") {
-            steps { bat "mvn package -f mavenjava" }
+
+        stage('test') {
+            steps {
+                bat "mvn test -f se-lab/pom.xml"
+            }
+        }
+
+        stage('package') {
+            steps {
+                bat 'mvn package -f se-lab/pom.xml'
+            }
         }
     }
 }
